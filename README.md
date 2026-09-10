@@ -36,19 +36,19 @@ Generated answer
 
 ## Tech Stack
 
-- Python
-- LangChain
-- Hugging Face Sentence Transformers
-- ChromaDB
-- Ollama
-- Llama 3.2
-- Gradio
-- PyPDF
+* Python
+* LangChain
+* Hugging Face Sentence Transformers
+* ChromaDB
+* Ollama
+* Llama 3.2
+* Gradio
+* PyPDF
 
 ## Project Structure
 
 ```text
-ragchatbox/
+rag_chatbox/
 │
 ├── data/
 │   └── SN_MPF_Eng.pdf
@@ -70,14 +70,14 @@ This file contains the main RAG pipeline.
 
 It:
 
-1. Loads the PDF using PyPDF
-2. Splits the document into smaller chunks
-3. Creates vector embeddings using Sentence Transformers
-4. Stores document chunks in ChromaDB
-5. Retrieves relevant chunks using MMR retrieval
-6. Combines the retrieved context with the user's question
-7. Sends the context and question to the local LLM
-8. Generates the final answer
+* Loads the PDF using PyPDF
+* Splits the document into smaller chunks
+* Creates vector embeddings using Sentence Transformers
+* Stores document chunks in ChromaDB
+* Retrieves relevant chunks using MMR retrieval
+* Combines the retrieved context with the user's question
+* Sends the context and question to the local LLM
+* Generates the final answer
 
 ### `app.py`
 
@@ -189,13 +189,8 @@ http://127.0.0.1:7860
 
 ## Example Questions
 
-```text
-What are the three types of MPF scheme?
-```
-
-```text
-What is an employer sponsored scheme?
-```
+* What are the three types of MPF scheme?
+* What is an employer sponsored scheme?
 
 The chatbot retrieves relevant sections from the document and uses them as context for the generated answer.
 
@@ -205,34 +200,34 @@ This project gave me practical exposure to the workflow behind a RAG application
 
 ### RAG Concepts
 
-- Document loading
-- Text chunking
-- Embeddings
-- Vector databases
-- Retrieval-Augmented Generation
-- Prompt construction
-- Local LLMs
+* Document loading
+* Text chunking
+* Embeddings
+* Vector databases
+* Retrieval-Augmented Generation
+* Prompt construction
+* Local LLMs
 
 ### Development Workflow
 
-- Python virtual environments
-- Installing and managing dependencies
-- Working with files and folders
-- Running Python applications from PowerShell
-- Connecting a backend pipeline to a user interface
-- Using Ollama for local AI
-- Using Git
-- Creating commits
-- Pushing code to GitHub
-- Writing project documentation
+* Python virtual environments
+* Installing and managing dependencies
+* Working with files and folders
+* Running Python applications from PowerShell
+* Connecting a backend pipeline to a user interface
+* Using Ollama for local AI
+* Using Git
+* Creating commits
+* Pushing code to GitHub
+* Writing project documentation
 
 ## Learning Journey
 
 This project was built after attending a hands-on introductory session on:
 
-- RAG
-- AI Agents
-- Agentic AI
+* RAG
+* AI Agents
+* Agentic AI
 
 Instead of stopping at the session, I reproduced the workflow locally to understand what each component actually does.
 
@@ -256,28 +251,28 @@ This is an early learning version of the project.
 
 Some areas that can be improved include:
 
-- Better retrieval quality
-- Source/page references for answers
-- More efficient vector database handling
-- Conversation memory
-- Support for multiple documents
-- Better error handling
-- Retrieval and answer evaluation
-- Improved chatbot UI
-- Public deployment
+* Better retrieval quality
+* Source and page references for answers
+* More efficient vector database handling
+* Conversation memory
+* Support for multiple documents
+* Better error handling
+* Retrieval and answer evaluation
+* Improved chatbot UI
+* Public deployment
 
 ## Future Improvements
 
-1. Avoid rebuilding the vector database every time the application starts
-2. Add page/source citations to retrieved answers
-3. Add support for multiple PDF documents
-4. Add conversation memory
-5. Improve retrieval quality
-6. Add evaluation for retrieval and answer accuracy
-7. Improve the Gradio interface
-8. Deploy the chatbot publicly
-9. Experiment with different embedding models
-10. Compare different local LLMs
+* Avoid rebuilding the vector database every time the application starts
+* Add page and source citations to retrieved answers
+* Add support for multiple PDF documents
+* Add conversation memory
+* Improve retrieval quality
+* Add evaluation for retrieval and answer accuracy
+* Improve the Gradio interface
+* Deploy the chatbot publicly
+* Experiment with different embedding models
+* Compare different local LLMs
 
 ## Key Takeaway
 
