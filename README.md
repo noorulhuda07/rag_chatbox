@@ -1,49 +1,47 @@
 # RAG Chatbox
 
-A beginner-built Retrieval-Augmented Generation (RAG) chatbot that answers questions from a PDF knowledge base using a local Large Language Model (LLM).
+A beginner-friendly Retrieval-Augmented Generation (RAG) chatbot that answers questions from a PDF knowledge base using a locally running LLM.
 
-## What is this project?
+## Overview
 
 This project was built as a hands-on learning project to understand how a RAG application works from end to end.
 
-Instead of asking an AI model to answer only from its general knowledge, the application first searches for relevant information from a PDF knowledge base and then provides that retrieved information to a local language model to generate an answer.
+Instead of relying only on the LLM's general knowledge, the application first retrieves relevant information from a PDF and then provides that information as context to the language model.
 
-The goal was to understand the practical workflow behind a RAG application, from loading a document to creating a working chatbot interface.
-
-## How RAG works
+The project demonstrates the complete workflow:
 
 ```text
 PDF
  ↓
-Load document
+Document Loading
  ↓
-Split document into chunks
+Text Chunking
  ↓
-Create embeddings
+Embeddings
  ↓
-Store embeddings in ChromaDB
+ChromaDB
  ↓
-User asks a question
+Relevant Chunk Retrieval
  ↓
-Retrieve relevant chunks
+Context + Question
  ↓
-Retrieved context + question
+Local LLM
  ↓
-Local LLM (Llama 3.2)
- ↓
-Generated answer
+Answer
 ```
 
 ## Tech Stack
 
-* Python
-* LangChain
-* Hugging Face Sentence Transformers
-* ChromaDB
-* Ollama
-* Llama 3.2
-* Gradio
-* PyPDF
+| Technology            | Purpose                 |
+| --------------------- | ----------------------- |
+| Python                | Application development |
+| LangChain             | RAG pipeline            |
+| PyPDF                 | PDF document loading    |
+| Sentence Transformers | Text embeddings         |
+| ChromaDB              | Vector database         |
+| Ollama                | Local LLM runtime       |
+| Llama 3.2             | Language model          |
+| Gradio                | Chat interface          |
 
 ## Project Structure
 
@@ -60,63 +58,80 @@ rag_chatbox/
 └── README.md
 ```
 
-The PDF knowledge base is not included in this GitHub repository.
+> The original PDF knowledge base is not included in this repository.
 
-## Main Components
+## How It Works
 
-### `rag.py`
+### 1. Load the PDF
 
-This file contains the main RAG pipeline.
+The application loads the PDF using PyPDF.
 
-It:
+### 2. Split the Document
 
-* Loads the PDF using PyPDF
-* Splits the document into smaller chunks
-* Creates vector embeddings using Sentence Transformers
-* Stores document chunks in ChromaDB
-* Retrieves relevant chunks using MMR retrieval
-* Combines the retrieved context with the user's question
-* Sends the context and question to the local LLM
-* Generates the final answer
+The extracted text is divided into smaller chunks so that relevant sections can be retrieved efficiently.
 
-### `app.py`
+### 3. Create Embeddings
 
-This file provides the chatbot interface using Gradio.
+Each document chunk is converted into a numerical vector using a Sentence Transformer embedding model.
 
-The user's question is passed from the web interface to the RAG pipeline, and the generated answer is displayed back in the chatbot.
+### 4. Store Embeddings
 
-## Local LLM
+The embeddings and document chunks are stored in ChromaDB.
 
-This project uses Ollama to run the language model locally.
+### 5. Retrieve Relevant Information
 
-```text
-Ollama
-└── llama3.2:3b
-```
+When the user asks a question, the application searches the vector database and retrieves the most relevant chunks using MMR retrieval.
 
-Using a local model allowed the application to be tested without relying on a paid cloud LLM API.
+### 6. Generate the Answer
 
-## Retrieval
-
-The application converts document chunks into numerical vectors called embeddings.
-
-When a user asks a question:
+The retrieved information and the user's question are provided to the local LLM.
 
 ```text
 User Question
       ↓
 Question Embedding
       ↓
-Compare with Document Embeddings
+Vector Search
       ↓
-Find Relevant Chunks
+Relevant Chunks
       ↓
-Send Relevant Context to LLM
+Retrieved Context
       ↓
-Generate Answer
+Llama 3.2
+      ↓
+Generated Answer
 ```
 
-The retrieved information is provided to the language model as context so that the answer is grounded in the selected document.
+## Main Components
+
+### `rag.py`
+
+Contains the main RAG pipeline:
+
+* PDF loading
+* Text splitting
+* Embedding generation
+* ChromaDB storage
+* MMR retrieval
+* Prompt construction
+* LLM response generation
+
+### `app.py`
+
+Provides the Gradio chatbot interface.
+
+The user's question is passed to the RAG pipeline and the generated response is displayed in the interface.
+
+## Local LLM
+
+This project uses Ollama to run the LLM locally.
+
+```text
+Ollama
+└── llama3.2:3b
+```
+
+Using a local model makes it possible to experiment with the application without depending on a paid cloud LLM API.
 
 ## Setup
 
@@ -133,7 +148,7 @@ cd rag_chatbox
 python -m venv .venv
 ```
 
-### 3. Activate the virtual environment
+### 3. Activate the environment
 
 For Windows PowerShell:
 
@@ -147,41 +162,31 @@ For Windows PowerShell:
 pip install -r requirements.txt
 ```
 
-### 5. Install Ollama
+### 5. Install and run Ollama
 
-Install Ollama and pull the required model:
+Install Ollama and download the required model:
 
 ```bash
 ollama pull llama3.2:3b
 ```
 
-### 6. Add the PDF knowledge base
+### 6. Add the PDF
 
-Place the PDF inside:
-
-```text
-data/
-```
-
-with the filename:
+Place the knowledge-base PDF in:
 
 ```text
-SN_MPF_Eng.pdf
+data/SN_MPF_Eng.pdf
 ```
 
-The original PDF used during development is not included in this repository.
+The PDF itself is not included in this repository.
 
-### 7. Run the chatbot
+### 7. Run the application
 
 ```bash
 python app.py
 ```
 
-The Gradio application will start locally.
-
-Open the local URL shown in the terminal.
-
-Usually:
+The Gradio interface should be available at:
 
 ```text
 http://127.0.0.1:7860
@@ -189,96 +194,91 @@ http://127.0.0.1:7860
 
 ## Example Questions
 
+You can ask questions such as:
+
 * What are the three types of MPF scheme?
 * What is an employer sponsored scheme?
 
-The chatbot retrieves relevant sections from the document and uses them as context for the generated answer.
+The chatbot retrieves relevant information from the PDF and uses it as context when generating the answer.
 
 ## What I Learned
 
-This project gave me practical exposure to the workflow behind a RAG application.
+Through this project, I gained hands-on experience with:
 
-### RAG Concepts
-
-* Document loading
-* Text chunking
+* Retrieval-Augmented Generation
+* Document loading and text chunking
 * Embeddings
 * Vector databases
-* Retrieval-Augmented Generation
+* Semantic retrieval
 * Prompt construction
 * Local LLMs
-
-### Development Workflow
-
+* LangChain
+* ChromaDB
+* Ollama
+* Gradio
 * Python virtual environments
-* Installing and managing dependencies
-* Working with files and folders
-* Running Python applications from PowerShell
-* Connecting a backend pipeline to a user interface
-* Using Ollama for local AI
-* Using Git
-* Creating commits
-* Pushing code to GitHub
-* Writing project documentation
+* Git and GitHub
+
+More importantly, I learned how the individual components of a RAG system connect together to form a working application.
 
 ## Learning Journey
 
-This project was built after attending a hands-on introductory session on:
+This project was built after attending an introductory hands-on session covering:
 
 * RAG
 * AI Agents
 * Agentic AI
 
-Instead of stopping at the session, I reproduced the workflow locally to understand what each component actually does.
+Instead of stopping at the demonstration, I reproduced the workflow locally to understand each component and how it works in practice.
 
-The goal was to move from:
+The learning process was:
 
 ```text
-Watching someone build
-        ↓
-Following the steps
-        ↓
-Running it locally
-        ↓
-Understanding each component
-        ↓
-Building and modifying independently
+Watch
+  ↓
+Follow
+  ↓
+Run Locally
+  ↓
+Understand
+  ↓
+Build Independently
 ```
 
 ## Current Limitations
 
 This is an early learning version of the project.
 
-Some areas that can be improved include:
+Current limitations include:
 
-* Better retrieval quality
-* Source and page references for answers
-* More efficient vector database handling
-* Conversation memory
-* Support for multiple documents
-* Better error handling
-* Retrieval and answer evaluation
-* Improved chatbot UI
-* Public deployment
+* The vector database can be rebuilt when the application starts
+* No source or page citations are displayed
+* Only one PDF is supported
+* Conversation memory is not implemented
+* Retrieval quality can be improved
+* There is no automated evaluation of retrieval or answer quality
+* The application is not publicly deployed
 
 ## Future Improvements
 
-* Avoid rebuilding the vector database every time the application starts
-* Add page and source citations to retrieved answers
-* Add support for multiple PDF documents
-* Add conversation memory
-* Improve retrieval quality
-* Add evaluation for retrieval and answer accuracy
-* Improve the Gradio interface
-* Deploy the chatbot publicly
-* Experiment with different embedding models
-* Compare different local LLMs
+Planned improvements include:
+
+* Persisting the vector database
+* Adding source and page citations
+* Supporting multiple PDF documents
+* Adding conversation memory
+* Improving retrieval quality
+* Evaluating retrieval and answer accuracy
+* Improving the chatbot interface
+* Experimenting with different embedding models
+* Comparing different local LLMs
+* Deploying the application publicly
 
 ## Key Takeaway
 
-The main purpose of this project was not just to build a chatbot.
+The main goal of this project was not simply to build a chatbot.
 
-It was to understand how the individual components of a RAG system connect:
+It was to understand the complete RAG pipeline:
 
 ```text
 Document
@@ -300,10 +300,10 @@ Answer
 Chat Interface
 ```
 
-This project is part of my hands-on learning journey into AI engineering and software development.
+This project represents my hands-on learning journey into RAG, local AI, and AI engineering.
 
 ## Disclaimer
 
-This repository is a learning project.
+This is a learning project.
 
 The original PDF knowledge source is not included in this repository.
